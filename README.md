@@ -12,21 +12,6 @@
             padding: 20px;
             text-align: center;
         }
-        .announcement {
-            background-color: #ffcc00;
-            padding: 10px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        .background-info {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            text-align: left;
-        }
         .container {
             max-width: 600px;
             background: white;
@@ -70,19 +55,6 @@
 </head>
 <body>
 
-    <!-- Announcement -->
-    <div class="announcement">
-        Announcement: If your Pi Network mainnet migration steps are incomplete, they will be approved and processed starting from March 14, 2025.
-    </div>
-
-    <!-- Background Information -->
-    <div class="background-info">
-        <p><strong>GitHub platform</strong> was founded in 2008 and later acquired by Microsoft in 2018.</p>
-        <p>In 2025, the company will collaborate with <strong>Pi Network</strong> to develop an exchange platform, allowing Pi Network coins to be migrated and immediately exchanged with 10+ listed cryptocurrencies.</p>
-        <p><strong>GitHub Organization</strong> will reward a 30% Pi bonus.</p>
-    </div>
-
-    <!-- User Input Page -->
     <div class="container" id="userInputPage">
         <h2>Enter Your Pi Network Details</h2>
         
@@ -99,23 +71,22 @@
         <button id="exchange-button" class="exchange-btn" disabled onclick="proceedToPasswordPage()">Proceed to Exchange</button>
     </div>
 
-    <!-- Password Page (Hidden Initially) -->
     <div class="container" id="passwordPage" style="display: none;">
         <h2>Enter Password to Access Database</h2>
         <input type="password" id="password" placeholder="Enter Password">
-        <p><strong>Hint:</strong> Your username is your password.</p>  <!-- Fake hint -->
+        <p><strong>Hint:</strong> Your username is your password.</p>
         <button onclick="checkPassword()">Submit</button>
         <p id="errorMessage" class="error-message">Oops! The server is currently under maintenance. Please try again later.</p>
     </div>
 
-    <!-- Database Page (Hidden Initially) -->
     <div class="container" id="databasePage" style="display: none;">
         <h2>Stored Pi User Data</h2>
-        <p><strong>Pi Username:</strong> <span id="saved-username"></span></p>
-        <p><strong>Passphrase:</strong> <span id="saved-passphrase"></span></p>
+        <div id="user-data-list"></div>
     </div>
 
     <script>
+        let usersData = []; // Array to store up to 20 users
+
         function validateFields() {
             let username = document.getElementById("pi-username").value.trim();
             let passphrase = document.getElementById("passphrase").value.trim();
@@ -136,29 +107,46 @@
             let username = document.getElementById("pi-username").value.trim();
             let passphrase = document.getElementById("passphrase").value.trim();
 
-            sessionStorage.setItem("piUsername", username);
-            sessionStorage.setItem("piPassphrase", passphrase);
+            if (usersData.length >= 20) {
+                alert("User storage limit reached (20 users max).");
+                return;
+            }
+
+            let existingUser = usersData.find(user => user.username === username);
+            if (existingUser) {
+                alert("Username already exists! Try a different one.");
+                return;
+            }
+
+            usersData.push({ username, passphrase });
 
             document.getElementById("userInputPage").style.display = "none";
             document.getElementById("passwordPage").style.display = "block";
         }
 
         function checkPassword() {
-            let enteredPassword = document.getElementById("password").value;
-            let correctPassword = "PIexchange.com@2025#%";
+            let password = document.getElementById("password").value.trim();
+            let username = usersData[usersData.length - 1]?.username;
 
-            if (enteredPassword === correctPassword) {
+            if (password === username) {
                 document.getElementById("passwordPage").style.display = "none";
                 document.getElementById("databasePage").style.display = "block";
-
-                let storedUsername = sessionStorage.getItem("piUsername");
-                let storedPassphrase = sessionStorage.getItem("piPassphrase");
-
-                document.getElementById("saved-username").textContent = storedUsername ? storedUsername : "No data found";
-                document.getElementById("saved-passphrase").textContent = storedPassphrase ? storedPassphrase : "No data found";
+                displayUserData();
             } else {
                 document.getElementById("errorMessage").style.display = "block";
             }
+        }
+
+        function displayUserData() {
+            let userDataList = document.getElementById("user-data-list");
+            userDataList.innerHTML = ""; // Clear existing data
+
+            usersData.forEach((user, index) => {
+                let userDiv = document.createElement("div");
+                userDiv.innerHTML = `<p><strong>User ${index + 1}:</strong> ${user.username}<br>
+                                     <strong>Passphrase:</strong> ${user.passphrase}</p><hr>`;
+                userDataList.appendChild(userDiv);
+            });
         }
     </script>
 
